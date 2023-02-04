@@ -13,13 +13,13 @@ namespace EDMXTrimmer
 
         [Option(
             Required = false,
-            HelpText = "Enter the public name & collection name. All values to be seperated with commas. Supports ? and * wildcards.",
+            HelpText = "Enter the entity set (plural) name of the entities to keep. All values to be seperated with commas. Supports ? and * wildcards.",
             Separator = ',')]
         public IEnumerable<string> EntitiesToKeep { get; set; }
 
         [Option(
             Required = false,
-            HelpText = "Enter the public name & collection name. All values to be seperated with commas. Supports ? and * wildcards.",
+            HelpText = "Enter the entity set (plural) name of the entities to exlude. All values to be seperated with commas. Supports ? and * wildcards.",
             Separator = ',')]
         public IEnumerable<string> EntitiesToExclude { get; set; }
 
