@@ -16,13 +16,16 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release EDMXTrimmer
     - name: Publish
-      run: dotnet publish --configuration Release EDMXTrimmer --output ./publish
-    - name: Upload EDMXTrimmer
+      run: dotnet publish --configuration Release EDMXTrimmer --output ./zip
+    - name: Upload EDMXTrimmer.zip
       uses: actions/upload-artifact@v2
       with:
-        name: EDMXTrimmer
-        path: ./publish
+        name: EDMXTrimmer.zip
+        path: ./zip
     - name: Create package
-      run: dotnet pack --configuration Release EDMXTrimmer --output ./publish
-    - name: Publish the package to GPR
-      run: dotnet nuget push ./publish/*.nupkg
+      run: dotnet pack --configuration Release EDMXTrimmer --output ./nupkg
+    - name: Upload EDMXTrimmer.nupkg
+      uses: actions/upload-artifact@v2
+      with:
+        name: EDMXTrimmer.nupkg
+        path: ./nupgk/EDMXTrimmer.1.0.0.nupkg
