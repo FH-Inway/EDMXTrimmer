@@ -1,6 +1,6 @@
 # Build the C# project
 
-name: Build
+name: Build and release
 
 on: 
   workflow_dispatch:
