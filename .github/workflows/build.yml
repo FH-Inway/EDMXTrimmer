@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
     - uses: actions/checkout@v3
@@ -29,3 +29,9 @@ jobs:
       with:
         name: EDMXTrimmer.nupkg
         path: nupkg/EDMXTrimmer.1.0.0.nupkg
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          zip/*
+        draft: true
