@@ -29,9 +29,11 @@ jobs:
       with:
         name: EDMXTrimmer.nupkg
         path: nupkg/EDMXTrimmer.1.0.0.nupkg
+    - name: Zip EDMXTrimmer
+      run: 7z a EDMXTrimmer.zip zip\*
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          zip/*
+          zip/EDMXTrimmer.zip
         draft: true
