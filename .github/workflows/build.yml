@@ -28,4 +28,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: EDMXTrimmer.nupkg
-        path: nupgk/EDMXTrimmer.1.0.0.nupkg
+        path: nupkg/EDMXTrimmer.1.0.0.nupkg
