@@ -14,7 +14,11 @@
             "args": [
                 "--edmxfile=C:\\Temp\\d365fo-odata.edmx", 
                 "--outputfilename=C:\\Temp\\d365fo-odata-trimmed.edmx",
-                "--entitiestokeep=DataManagementDefinitionGroups"],
+                "--entitiestokeep=DataManagementDefinitionGroups",
+                // "--entitiestokeep='*xxce*,*Contura*,Vend*,Purch*,Ledger*,*Jour*,Position*,Worker*,Employee*,Customer*,Contractor*,Jobs*,*User*,*Role*,*Employment*,*AccountStructure*,*AdvancedRule*,DMF*,DataManage*,*FiscalPeriod*,MainAccount*,FinancialDimension*,*Invoice*,Proj*'",
+                "--entitiestoexclude=RetailReturnPolicies"
+                // "--entitiestoexclude='CDS*,ExFlow_*,EXF_*,*_IN,*_RU,*_CN,*_BR,Retail*,SADD*'"
+            ],
             "cwd": "${workspaceFolder}/EDMXTrimmer/EDMXTrimmer",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
