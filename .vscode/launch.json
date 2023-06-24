@@ -1,29 +1,51 @@
 {
     "version": "0.2.0",
     "configurations": [
-        {
-            // Use IntelliSense to find out which attributes exist for C# debugging
-            // Use hover for the description of the existing attributes
-            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (console)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/EDMXTrimmer/EDMXTrimmer/bin/Debug/netcoreapp3.1/EDMXTrimmer.exe",
-            "args": [
-                "--edmxfile=C:\\Temp\\d365fo-odata.edmx", 
-                "--outputfilename=C:\\Temp\\d365fo-odata-trimmed.edmx",
-                "--entitiestokeep=DataManagementDefinitionGroups"],
-            "cwd": "${workspaceFolder}/EDMXTrimmer/EDMXTrimmer",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
-            "stopAtEntry": false
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
-        }
+      {
+        // Use IntelliSense to find out which attributes exist for C# debugging
+        // Use hover for the description of the existing attributes
+        // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+        "name": ".NET Core Launch (console)",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "cleanbuild",
+        // If you have changed target frameworks, make sure to update the program path.
+        // "program": "${workspaceFolder}/EDMXTrimmer/EDMXTrimmer/bin/Debug/netcoreapp3.1/EDMXTrimmer.dll",
+        // "program": "${workspaceFolder}/EDMXTrimmer/EDMXTrimmer/bin/Debug/net7.0/EDMXTrimmer.dll",
+        "program": "${workspaceFolder}/EDMXTrimmer/EDMXTrimmer/bin/Debug/net6.0/EDMXTrimmer.dll",
+        /* FO
+        "args": [
+          "--edmxfile", "${workspaceFolder}/../Temp/d365fo-odata.edmx", 
+          "--entitiestokeep", "Companies,CustomersV3,TransportationAppointments", 
+          "--outputfilename", "${workspaceFolder}/../Temp/d365fo-odata-trimmed.edmx", 
+          "--verbose"],
+        */
+        /* BC
+        "args": [
+          "--edmxfile", "${workspaceFolder}/../Temp/BusinessCentral_metadata.xml", 
+          "--entitiestokeep", "Company,InvoiceDocument", 
+          "--outputfilename", "${workspaceFolder}/../Temp/BusinessCentral_metadata-trimmed.xml", 
+          "--verbose", 
+          "--removeprimaryannotations", 
+          "--removeactionimports"],
+        */
+        // CE
+        "args": [
+          "--edmxfile", "${workspaceFolder}/../Temp/dataverse_metadata.xml", 
+          "--entitiestokeep", "accounts,appointments", 
+          "--outputfilename", "${workspaceFolder}/../Temp/dataverse_metadata-trimmed.xml",
+          "--removeactionimports", 
+          "--verbose"],
+        //
+        "cwd": "${workspaceFolder}/EDMXTrimmer/EDMXTrimmer",
+        // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+        "console": "internalConsole",
+        "stopAtEntry": false
+      },
+      {
+        "name": ".NET Core Attach",
+        "type": "coreclr",
+        "request": "attach"
+      }
     ]
-}
+  }
