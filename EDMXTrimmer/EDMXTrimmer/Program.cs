@@ -7,7 +7,7 @@ namespace EDMXTrimmer
 {
     public class Options
     {
-        private const string EntitiesToKeepName = "entitiestokeep";
+        private const string EntitiesToKeepName = "entitiestokeep"; // TODO not sure what this adds, since those are the already available parameter names
         private const string EntitiesToExcludeName = "entitiestoexclude";
 
         [Option(
@@ -95,6 +95,7 @@ namespace EDMXTrimmer
                 entitiesAreRegularExpressions:opt.EntitiesAreRegularExpressions,
                 removePrimaryAnnotations:opt.RemovePrimaryAnnotations,
                 removeActionImports:opt.RemoveActionImports) {
+                // TODO apply this to the other options as well; long term, we should maybe switch to a configuration file and class
                 RemoveComplexTypesFlag = opt.RemoveComplexTypes,
                 RemoveFunctionImportsFlag = opt.RemoveFunctionImports,
                 ActionsToInclude = opt.ActionsToKeep

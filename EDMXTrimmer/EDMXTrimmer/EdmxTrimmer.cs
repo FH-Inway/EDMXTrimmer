@@ -45,7 +45,7 @@ namespace EDMXTrimmer
         private const string ATTRIBUTE_TARGET = "Target";
         private const string ATTRIBUTE_AXType = "AXType";
 
-        private readonly IDictionary<string, Regex> entityTypeRegexps = new Dictionary<string, Regex>();
+        private readonly IDictionary<string, Regex> entityTypeRegexps = new Dictionary<string, Regex>(); // TODO rename, because it now also stores action regexps
         
         public EdmxTrimmer(
             string edmxFile, 
@@ -166,7 +166,12 @@ namespace EDMXTrimmer
             RemoveEntityTypes(entityTypes, entityTypeNamesToKeep);
         }
 
-        private (List<XmlNode> EntitySetsToKeep, IReadOnlyCollection<string> EntityTypeNamesToKeep) FilterByEntity(IEnumerable<string> filteringEntities, IEnumerable<XmlNode> entitySets, IEnumerable<XmlNode> entityTypes, bool includeFiltered) 
+        private (List<XmlNode> EntitySetsToKeep, IReadOnlyCollection<string> EntityTypeNamesToKeep) 
+            FilterByEntity(
+                IEnumerable<string> filteringEntities, 
+                IEnumerable<XmlNode> entitySets, 
+                IEnumerable<XmlNode> entityTypes, 
+                bool includeFiltered) // TODO add two methods as wrappers where this is true or false
         {
             var nameRegex = EntitySearchTermsToRegularExpression(filteringEntities);
 
@@ -174,6 +179,7 @@ namespace EDMXTrimmer
                 .Where(n => Regex.IsMatch(n.Attributes[ATTRIBUTE_NAME].Value, nameRegex) ? includeFiltered : !includeFiltered)
                 .ToList();
 
+            // TODO fix issue with filtering with collection name (plural) on entity nodes that contain the entity name (singular); see https://github.com/shashisadasivan/EDMXTrimmer/pull/28#pullrequestreview-1708615750
             var entityTypeNames = entitySetsNodes
                 .Select(n => GetEntityTypeWithoutNamespace(n, TAG_ENTITY_TYPE))
                 .Concat(entityTypes
@@ -186,6 +192,7 @@ namespace EDMXTrimmer
             return (entitySetsNodes, entityTypeNames);
         }
 
+        // TODO refactoring: move regular expression stuff to a separate regex utility class/file
         private string EntitySearchTermsToRegularExpression(IEnumerable<string> entitiesToKeep)
         {
             var parts = entitiesToKeep.Select(EntitySearchTermToRegularExpression);
@@ -207,6 +214,8 @@ namespace EDMXTrimmer
 
         private void RemoveEntitySets(IEnumerable<XmlNode> entitySets, List<XmlNode> entitiesKeep)
         {
+            // TODO use RemoveNodes here as well
+
             // Remove entities not required (EntitySet)
             entitySets.Except(entitiesKeep).ToList().ForEach(n => n.ParentNode.RemoveChild(n));
             //Remove unwanted Nodes in the Entity Set
@@ -249,8 +258,8 @@ namespace EDMXTrimmer
 
             // Determine enums to keep
             List<String> enumTypesFound = new List<string>();
-            // Enums from entity type properties
 
+            // Enums from entity type properties
             var propertiesTypes = entityTypesToKeep.SelectMany(typeNode => GetEntityTypesFromNodeChildren(typeNode, TAG_PROPERTY));
             enumTypesFound.AddRange(propertiesTypes);
 
@@ -268,6 +277,7 @@ namespace EDMXTrimmer
                 enumTypesFound.Add(returnType.FirstOrDefault());
             });
             // Remove unused Enums except AXType
+            // TODO use RemoveNodes here as well
             this._xmlDocument.GetElementsByTagName(TAG_ENUM_TYPE).Cast<XmlNode>()
                 .Where(enumType => 
                     !enumType.Attributes[ATTRIBUTE_NAME].Value.Equals(ATTRIBUTE_AXType)
@@ -278,6 +288,8 @@ namespace EDMXTrimmer
             
             return;
 
+            // TODO refactor inner methods
+
             IEnumerable<string> GetEntityTypesFromNodeChildren(XmlNode typeNode, string nodeName) =>
                 typeNode
                     .ChildNodes
@@ -287,6 +299,7 @@ namespace EDMXTrimmer
                     .Where(name => name != null)
                     .ToList();
 
+            // TODO can more generic GetEntityTypeWithoutNamespace be used instead?
             string RemoveNamespace(XmlNode xmlNode) {
                 var enumType = xmlNode.Attributes[ATTRIBUTE_TYPE]?.Value;
 
@@ -332,6 +345,7 @@ namespace EDMXTrimmer
             }
         }
 
+        // TODO refactor to inner method of RemoveEntityTypes
         private static string GetActionName(XmlNode actionNode) => actionNode.Attributes[ATTRIBUTE_NAME]?.Value;
 
         private string GetEntityTypeWithoutNamespace(XmlNode n, string attributeName) {
@@ -376,6 +390,7 @@ namespace EDMXTrimmer
                 .ForEach(n => n.ParentNode.RemoveChild(n));
         }
 
+        // TODO rename namespace to xmlNamespaceOrAlias to avoid confusion with C# keyword namespace
         private bool IsEntityTypeMatches(string entityType, string @namespace, string source) {
             var key = "ENTITY-" + @namespace + entityType;
             var regex = GetRegexOrCreate(key, () => Regex.Escape(@namespace + entityType) + "\\)?$");
@@ -395,6 +410,7 @@ namespace EDMXTrimmer
             return target;
         }
 
+        // TODO to be consistent, all logic that removes child nodes should use this method
         private static void RemoveNodes(IEnumerable<XmlNode> nodesToRemove) {
             foreach(var node in nodesToRemove!.ToList()) {
                 node.ParentNode.RemoveChild(node);
